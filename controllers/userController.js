@@ -22,9 +22,9 @@ const userController = {
         return res.redirect('/signup')
       } else {
         User.create({
-          name: req.body.name,
-          email: req.body.email,
-          password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
+          name: name,
+          email: email,
+          password: bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
         }).then(user => {
           // 註冊成功
           req.flash('success_msg', '註冊成功!')
