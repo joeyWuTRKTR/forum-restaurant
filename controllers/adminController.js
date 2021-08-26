@@ -33,6 +33,33 @@ const adminController = {
     Restaurant.findByPk(id, { raw: true }).then(restaurant => {
       return res.render('admin/restaurant', { restaurant })
     })
+  },
+
+  editRestaurant: (req, res) => {
+    const id = req.params.id
+    return Restaurant.findByPk(id, { raw: true }).then(restaurant => {
+      return res.render('admin/create', { restaurant })
+    })
+  },
+
+  putRestaurant: (req, res) => {
+    const id = req.params.id
+    const { name, tel, address, opening_hours, description } = req.body
+    if (!name) {
+      req.flash('warning_msg', '請填寫餐廳名稱!')
+      return res.rediect('back')
+    }
+
+    return Restaurant.findByPk(id)
+      .then(restaurant => {
+        restaurant.update({
+          name, tel, address, opening_hours, description
+        })
+      })
+      .then(restaurant => {
+        req.flash('success_msg', '餐廳資訊已成功修改!')
+        res.redirect('/admin/restaurants')
+      })
   }
 }
 

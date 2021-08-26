@@ -2,6 +2,7 @@ const passport = require('./config/passport')
 const express = require('express')
 const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 // 產生flash並放到session
 const flash = require('connect-flash')
@@ -17,6 +18,7 @@ app.set('view engine', 'handlebars')
 app.use(session({ secret:'secret', resave: false, saveUninitialized: false }))
 app.use(flash())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // 使用passport
 app.use(passport.initialize()) // 初始化

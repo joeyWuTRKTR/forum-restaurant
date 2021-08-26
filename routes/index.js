@@ -42,4 +42,8 @@ module.exports = (app, passport) => {
 
   // read
   app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.readRestaurant)
+
+  // update
+  app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
+  app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant)
 }
