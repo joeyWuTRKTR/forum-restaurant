@@ -19,6 +19,7 @@ app.use(session({ secret:'secret', resave: false, saveUninitialized: false }))
 app.use(flash())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use('/upload', express.static(__dirname + '/upload'))
 
 // 使用passport
 app.use(passport.initialize()) // 初始化

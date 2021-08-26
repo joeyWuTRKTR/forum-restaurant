@@ -1,6 +1,9 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
 
+// 引入處理檔案的模組
+const fs = require('fs')
+
 const adminController = {
   getRestaurants: (req, res) => {
     // 自動導到views文件夾，找到admin文件的restaurants.handlebars
@@ -21,11 +24,27 @@ const adminController = {
       return res.redirect('back')
     }
 
-    return Restaurant.create({ name, tel, address, opening_hours, description })
-      .then(() => {
-        req.flash('success_msg', '成功新增餐廳!')
-        res.redirect('/admin/restaurants')
+    const { file } = req 
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return Restaurant.create({
+            name, tel, address, opening_hours, description, 
+            image: file ? `/upload/${file.originalname}` : null
+          }).then(() => {
+            req.flash('success_msg', '成功新增餐廳!')
+            return res.redirect('/admin/restaurants')
+          })
+        })
       })
+    } else {
+      return Restaurant.create({ name, tel, address, opening_hours, description, image: null })
+        .then(() => {
+          req.flash('success_msg', '成功新增餐廳!')
+          res.redirect('/admin/restaurants')
+        })
+    }
   },
 
   readRestaurant: (req, res) => {
@@ -50,6 +69,21 @@ const adminController = {
       return res.rediect('back')
     }
 
+    const { file } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return Restaurant.create({
+            name, tel, address, opening_hours, description,
+            image: file ? `/upload/${file.originalname}` : restaurant.image
+          }).then(() => {
+            req.flash('success_msg', '成功新增餐廳!')
+            return res.redirect('/admin/restaurants')
+          })
+        })
+      })
+    } else {
     return Restaurant.findByPk(id)
       .then(restaurant => {
         restaurant.update({
@@ -60,6 +94,7 @@ const adminController = {
         req.flash('success_msg', '餐廳資訊已成功修改!')
         res.redirect('/admin/restaurants')
       })
+    }
   },
 
   deleteRestaurant: (req, res) => {
