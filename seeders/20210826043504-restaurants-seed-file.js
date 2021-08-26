@@ -4,6 +4,7 @@ const faker = require('faker')
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('Restaurants', 
+    // d => current element, i => index
       Array.from({ length: 50 }).map((d, i) => ({
         name: faker.name.findName(),
         tel: faker.phone.phoneNumber(),
