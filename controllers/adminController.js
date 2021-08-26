@@ -60,6 +60,18 @@ const adminController = {
         req.flash('success_msg', '餐廳資訊已成功修改!')
         res.redirect('/admin/restaurants')
       })
+  },
+
+  deleteRestaurant: (req, res) => {
+    const id = req.params.id
+    return Restaurant.findByPk(id)
+      .then(restaurant => {
+        restaurant.destroy()
+      })
+      .then(() => {
+        req.flash('success_msg', '此餐廳資訊已成功刪除!')
+        return res.redirect('/admin/restaurants')
+      })
   }
 }
 

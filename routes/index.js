@@ -46,4 +46,7 @@ module.exports = (app, passport) => {
   // update
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
   app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant)
+
+  // delete
+  app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 }
