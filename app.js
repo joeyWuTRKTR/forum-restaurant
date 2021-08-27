@@ -8,6 +8,9 @@ const methodOverride = require('method-override')
 const flash = require('connect-flash')
 const session = require('express-session')
 
+// 封裝測試
+const helpers = require('./_helpers')
+
 const db = require('./models')
 const app = express()
 const port = process.env.PORT || 3000
@@ -28,7 +31,7 @@ app.use(passport.session()) // 資料存放在session
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.warning_msg = req.flash('warning_msg')
-  res.locals.user = req.user
+  res.locals.user = helpers.getUser(req) // 封裝測試
   next()
 })
 
