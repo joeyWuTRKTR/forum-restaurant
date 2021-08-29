@@ -4,6 +4,8 @@ const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 
+var hbs = handlebars.create({});
+
 // 產生flash並放到session
 const flash = require('connect-flash')
 const session = require('express-session')
@@ -11,11 +13,12 @@ const session = require('express-session')
 // 封裝測試
 const helpers = require('./_helpers')
 
-const db = require('./models')
 const app = express()
 const port = process.env.PORT || 3000
 
-app.engine('handlebars', handlebars({ defaultLayout: 'main' }))
+app.engine('handlebars', handlebars({ defaultLayout: 'main', helpers: {
+  counter: (index) => index + 1, // global helper function for count number
+} }))
 app.set('view engine', 'handlebars')
 
 app.use(session({ secret:'secret', resave: false, saveUninitialized: false }))

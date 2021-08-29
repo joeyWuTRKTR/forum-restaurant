@@ -1,8 +1,9 @@
 const imgur = require('imgur-node-api')
-const IMGUR_CLIENT_ID = '0018ea2a5022724'
+const IMGUR_CLIENT_ID = 'c1c790be91ef2ff'
 
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 
 
 // 引入處理檔案的模組
@@ -85,6 +86,11 @@ const adminController = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
+        if (err) {
+          console.log('upload fail: %o', err);
+          res.send('');
+          return;
+        }
         return Restaurant.findByPk(req.params.id)
           .then((restaurant) => {
             restaurant.update({
@@ -125,6 +131,32 @@ const adminController = {
         req.flash('success_msg', '此餐廳資訊已成功刪除!')
         return res.redirect('/admin/restaurants')
       })
+  },
+
+  getUsers: (req, res) => {
+    User.findAll({ raw: true, nest: true }).then(users => {
+      users.forEach(user => {
+        if (user.isAdmin === 0) {
+          user.isAdmin = 'user'
+          user.setting = 'set as admin'
+        } else {
+          user.isAdmin = 'admin'
+          user.setting = 'set as user'
+        }
+      })
+      return res.render('admin/users', { users })
+    })
+  },
+
+  toggleAdmin: (req, res) => {
+    return User.findByPk(req.params.id).then(user => {
+      user.isAdmin === false ? user.isAdmin = true : user.isAdmin = false
+      return user.update({ isAdmin: user.isAdmin })
+        .then(() => {
+          req.flash('success_msg', '已修改使用者權限！')
+          res.redirect('/admin/users')
+        })
+    })
   }
 }
 
