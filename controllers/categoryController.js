@@ -55,6 +55,7 @@ const categoryController = {
   deleteCategory: (req, res) => {
     return Category.findByPk(req.params.id)
       .then(category => {
+        console.log(category)
         category.destroy()
       })
       .then(() => {

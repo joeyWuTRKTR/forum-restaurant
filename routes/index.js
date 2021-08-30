@@ -73,4 +73,10 @@ module.exports = (app, passport) => {
 
   // admin category delete
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
+
+  // restaurants
+  app.get('/restaurants', restController.getRestaurants)
+
+  // restaurant
+  app.get('/restaurants/:id', restController.getRestaurant)
 }
