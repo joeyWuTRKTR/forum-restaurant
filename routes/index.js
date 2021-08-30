@@ -62,12 +62,15 @@ module.exports = (app, passport) => {
   app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
 
   // admin category read
-  app.get('/admin/categories', categoryController.getCategories)
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
 
   // admin category create
-  app.post('/admin/categories', categoryController.postCategory)
+  app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
 
   // admin category update
-  app.get('/admin/categories/:id', categoryController.getCategories)
-  app.put('/admin/categories/:id', categoryController.editCategory)
+  app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
+  app.put('/admin/categories/:id', authenticatedAdmin, categoryController.editCategory)
+
+  // admin category delete
+  app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 }

@@ -42,7 +42,7 @@ const categoryController = {
   },
 
   editCategory: (req, res) => {
-    Category.findByPk(req.params.id).then(category => {
+    return Category.findByPk(req.params.id).then(category => {
       category.update({
         name: req.body.name
       })
@@ -50,6 +50,16 @@ const categoryController = {
           return res.redirect('/admin/categories')
         })
     })
+  },
+
+  deleteCategory: (req, res) => {
+    return Category.findByPk(req.params.id)
+      .then(category => {
+        category.destroy()
+      })
+      .then(() => {
+        res.redirect('/admin/categories')
+      })
   }
 }
 
