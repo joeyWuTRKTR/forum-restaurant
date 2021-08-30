@@ -3,6 +3,7 @@ const helpers = require('../_helpers')
 const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
+const categoryController = require('../controllers/categoryController')
 
 // use Multer to upload image
 const multer = require('multer')
@@ -59,4 +60,7 @@ module.exports = (app, passport) => {
   // admin users page
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
   app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
+
+  // admin category read
+  app.get('/admin/categories', categoryController.getCategories)
 }
