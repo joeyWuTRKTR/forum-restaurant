@@ -16,9 +16,11 @@ const helpers = require('./_helpers')
 const app = express()
 const port = process.env.PORT || 3000
 
-app.engine('handlebars', handlebars({ defaultLayout: 'main', helpers: {
-  counter: (index) => index + 1, // global helper function for count number
-} }))
+app.engine('handlebars', handlebars({ 
+  defaultLayout: 'main', 
+  helpers: require('./config/handlebars-helpers')
+  // { counter: (index) => index + 1 }
+}))
 app.set('view engine', 'handlebars')
 
 app.use(session({ secret:'secret', resave: false, saveUninitialized: false }))

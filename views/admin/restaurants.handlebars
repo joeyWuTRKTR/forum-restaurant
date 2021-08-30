@@ -19,7 +19,7 @@
   <tbody>
     {{#each restaurants}}
     <tr>
-      <th scope="row">{{counter @index }}</th>
+      <th scope="row">{{#ifCounter @index}}{{/ifCounter}}</th>
       <td>{{this.name}}</td>
       <td>{{this.Category.name}}</td>
       <td>
