@@ -10,10 +10,11 @@ const restController = {
       include: [Category]
     })
       .then(restaurants => {
-        restaurants.map(restaurant => {
+        restaurants.forEach(restaurant => {
           restaurant.description= restaurant.description.substring(0, 50)
           restaurant.categoryName = restaurant.Category.name
         })
+
         return res.render('restaurants', { restaurants })
       })
   },
