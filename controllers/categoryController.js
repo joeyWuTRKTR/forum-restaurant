@@ -7,7 +7,18 @@ const categoryController = {
       raw: true,
       nest: true,
     }).then(categories => {
-      return res.render('admin/categories', { categories })
+      if (req.params.id) {
+        Category.findByPk(req.params.id)
+          .then(category => {
+            return res.render('admin/categories', {
+              category: category.toJSON(),
+              categories
+            })
+          })
+      } else {
+        return res.render('admin/categories', { categories })
+      }
+  
     })
   },
 
@@ -26,6 +37,17 @@ const categoryController = {
       })
         .then(() => {
           return res.redirect('categories')
+        })
+    })
+  },
+
+  editCategory: (req, res) => {
+    Category.findByPk(req.params.id).then(category => {
+      category.update({
+        name: req.body.name
+      })
+        .then(() => {
+          return res.redirect('/admin/categories')
         })
     })
   }
