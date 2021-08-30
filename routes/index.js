@@ -63,4 +63,7 @@ module.exports = (app, passport) => {
 
   // admin category read
   app.get('/admin/categories', categoryController.getCategories)
+
+  //admin category create
+  app.post('/admin/categories', categoryController.postCategory)
 }

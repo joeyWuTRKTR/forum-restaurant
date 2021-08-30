@@ -22,7 +22,7 @@
   <tbody>
     {{#each users}}
     <tr>
-      <th scope="row">{{counter @index }}</th>
+      <th scope="row">{{#ifCounter @index}}{{/ifCounter}}</th>
       <td>{{this.name}}</td>
       <td>{{this.email}}</td>
       <td>{{this.isAdmin}}</td>
