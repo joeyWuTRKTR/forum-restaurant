@@ -4,6 +4,7 @@ const IMGUR_CLIENT_ID = 'c1c790be91ef2ff'
 const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
+const Category = db.Category
 
 
 // 引入處理檔案的模組
@@ -12,7 +13,11 @@ const fs = require('fs')
 const adminController = {
   getRestaurants: (req, res) => {
     // 自動導到views文件夾，找到admin文件的restaurants.handlebars
-    Restaurant.findAll({ raw: true, nest: true }).then(restaurants => {
+    Restaurant.findAll({ 
+      raw: true, 
+      nest: true ,
+      include: [Category]
+    }).then(restaurants => {
       return res.render('admin/restaurants', { restaurants })
     })
   },
@@ -62,7 +67,8 @@ const adminController = {
 
   readRestaurant: (req, res) => {
     const id = req.params.id
-    Restaurant.findByPk(id, { raw: true }).then(restaurant => {
+    Restaurant.findByPk(id, { raw: true, nest:true ,include:[Category] }).then(restaurant => {
+      console.log(restaurant)
       return res.render('admin/restaurant', { restaurant })
     })
   },
