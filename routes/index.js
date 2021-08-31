@@ -35,8 +35,9 @@ module.exports = (app, passport) => {
   // user post comment
   app.post('/comments', authenticated, commentController.postComment)
 
-  //profile
+  // profile
   app.get('/users/:id', authenticated, userController.getUser)
+  app.get('/users/:id/edit', authenticated, userController.editUser)
 
   // admin index page
   app.get('/admin', authenticatedAdmin, (req, res) => { res.redirect('/admin/restaurants') })

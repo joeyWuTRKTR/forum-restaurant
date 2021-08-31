@@ -50,11 +50,19 @@ const userController = {
     return res.redirect('/signin')
   }, 
 
-  // profile
+  // profile page
   getUser: (req, res) => {
     return User.findByPk(req.params.id)
       .then(user => {
         return res.render('profile', { user: user.toJSON() } )
+      })
+  },
+
+  // profile edit page
+  editUser: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+        return res.render('profileEdit', { user: user.toJSON() })
       })
   }
 }
