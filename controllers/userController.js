@@ -64,6 +64,19 @@ const userController = {
       .then(user => {
         return res.render('profileEdit', { user: user.toJSON() })
       })
+  }, 
+
+  // profile update page
+  putUser: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+        user.update({
+          name: req.body.name
+        })
+          .then(() => {
+            return res.redirect(`/users/${req.params.id}`)
+          })
+      })
   }
 }
 
