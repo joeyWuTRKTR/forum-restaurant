@@ -2,32 +2,56 @@ const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
 
+const pageLimit = 10
+
 const restController = {
-  getRestaurants: async (req, res) => {
+  getRestaurants: (req, res) => {
+    let offset = 0
     const whereQuery = {}
     let categoryId = ''
+    if (req.query.page) {
+      offset = (req.query.page - 1) * pageLimit
+    }
     if (req.query.categoryId) {
       categoryId = Number(req.query.categoryId)
       whereQuery.CategoryId = categoryId
     }
 
-    await Restaurant.findAll({ 
+    Restaurant.findAndCountAll({ 
       raw: true,
       nest: true,
       include: [Category],
-      where: whereQuery // 篩選條件
+      where: whereQuery, // 篩選條件
+      offset: offset,
+      limit: pageLimit
     })
       .then(restaurants => {
-        restaurants.forEach(restaurant => {
+        // pagination data
+        const page = Number(req.query.page) || 1
+        const pages = Math.ceil(restaurants.count / pageLimit)
+        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
+        const prev = page - 1 < 1 ? 1 : page - 1 
+        const next = page + 1 > pages ? pages : page + 1 
+
+        restaurants.rows.forEach(restaurant => {
           restaurant.description= restaurant.description.substring(0, 50)
           restaurant.categoryName = restaurant.Category.name
         })
+
         Category.findAll({
           raw: true,
           nest: true
         })
           .then(categories => {
-            return res.render('restaurants', { restaurants, categories, categoryId })
+            return res.render('restaurants', { 
+              restaurants: restaurants.rows, 
+              categories, 
+              categoryId,
+              page,
+              totalPage,
+              prev,
+              next
+           })
           })
       })
   },
