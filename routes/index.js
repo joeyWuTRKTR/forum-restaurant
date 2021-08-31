@@ -28,6 +28,9 @@ module.exports = (app, passport) => {
   app.get('/', authenticated, (req, res) => { res.redirect('/restaurants') })
   app.get('/restaurants', authenticated, restController.getRestaurants)
 
+  // restaurant
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+
   // admin index page
   app.get('/admin', authenticatedAdmin, (req, res) => { res.redirect('/admin/restaurants') })
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
@@ -73,10 +76,4 @@ module.exports = (app, passport) => {
 
   // admin category delete
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
-
-  // restaurants
-  app.get('/restaurants', restController.getRestaurants)
-
-  // restaurant
-  app.get('/restaurants/:id', restController.getRestaurant)
 }
