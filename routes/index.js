@@ -4,6 +4,7 @@ const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
 const categoryController = require('../controllers/categoryController')
+const commentController = require('../controllers/commentController')
 
 // use Multer to upload image
 const multer = require('multer')
@@ -30,6 +31,9 @@ module.exports = (app, passport) => {
 
   // restaurant
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+
+  // user post comment
+  app.post('/comments', authenticated, commentController.postComment)
 
   // admin index page
   app.get('/admin', authenticatedAdmin, (req, res) => { res.redirect('/admin/restaurants') })

@@ -61,7 +61,7 @@ const restController = {
       .then(restaurant => {
         return res.render('restaurant', { restaurant })
       })
-  }
+  },
 }
 
 module.exports = restController
