@@ -60,8 +60,6 @@ const restController = {
 
   getRestaurant: (req, res) => {
     Restaurant.findByPk( req.params.id, { 
-      raw: true,
-      nest: true,
       include: [Category, { model: Comment, include:[User] }] 
     })
       .then(restaurant => {
