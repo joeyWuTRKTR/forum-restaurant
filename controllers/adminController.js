@@ -5,6 +5,7 @@ const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
+const Comment = db.Comment
 
 
 // 引入處理檔案的模組
@@ -168,6 +169,17 @@ const adminController = {
           res.redirect('/admin/users')
         })
     })
+  },
+
+  deleteComment: (req, res) => {
+    console.log('##', req.body.restaurantId)
+    return Comment.findByPk(req.params.id)
+      .then(comment => {
+        comment.destroy()
+          .then((comment) => {
+            res.redirect(`/restaurants/${comment.RestaurantId}`)
+          })
+      })
   }
 }
 

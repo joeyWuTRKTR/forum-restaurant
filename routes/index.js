@@ -80,4 +80,7 @@ module.exports = (app, passport) => {
 
   // admin category delete
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
+
+  //admin comment delete
+  app.delete('/comments/:id', authenticatedAdmin, adminController.deleteComment)
 }
