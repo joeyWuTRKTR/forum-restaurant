@@ -64,6 +64,9 @@ const restController = {
       include: [Category, { model: Comment, include:[User] }] 
     })
       .then(restaurant => {
+        restaurant.increment({
+          views: +1
+        })
         return res.render('restaurant', { restaurant: restaurant.toJSON() })
       })
   },
