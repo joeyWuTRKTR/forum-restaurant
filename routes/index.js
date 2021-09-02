@@ -33,6 +33,8 @@ module.exports = (app, passport) => {
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
   // restaurant
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  // restaurant count
+  app.get('/restaurants/:id/dashboard', authenticated, restController.getCounts)
 
   // user post comment
   app.post('/comments', authenticated, commentController.postComment)
