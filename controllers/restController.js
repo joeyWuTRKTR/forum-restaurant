@@ -1,3 +1,4 @@
+//const { DESCRIBE } = require('sequelize/types/lib/query-types')
 const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
@@ -66,6 +67,28 @@ const restController = {
         return res.render('restaurant', { restaurant: restaurant.toJSON() })
       })
   },
+
+  getFeeds: (req, res) => {
+    return Restaurant.findAll({
+      limit: 10,
+      raw: true,
+      nest: true,
+      order: [['createdAt', 'DESC']],
+      include: [Category]
+    })
+      .then(restaurants => {
+        Comment.findAll({
+          limit: 10,
+          raw: true,
+          nest: true,
+          order: [['createdAt', 'DESC']],
+          include: [Restaurant, User]
+        })
+          .then(comments => {
+            return res.render('feeds', { restaurants, comments })
+          })
+      })
+  }
 }
 
 module.exports = restController
